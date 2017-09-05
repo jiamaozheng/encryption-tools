@@ -4,13 +4,13 @@
 * Tool file: _Imlab_encryption_tool.sh_
 * Password file: _pass_
 
-## Change password file permission as a root with chmod 
+## Change password file permission
 * ```chmod 400 pass```
-* save it in a safe place (e.g. ~/.ssh/)
+* save it in a safe place (e.g. ```~/.ssh/```)
 
 ## Encrypt/Decrypt a single file
 * Encryption usage: ```sh imlab_encryption_openssl.sh ~/.ssh/pass test1/README.md encrypt```
-* Decryption usage: ```sh imlab_encryption_openssl.sh ~/.ssh/pass test1/README.md decrypt```
+* Decryption usage: ```sh imlab_encryption_openssl.sh ~/.ssh/pass test1/README.md.enc decrypt```
 
 ## Encrypt/Decrypt a folder 
 * Encryption usage: ```sh imlab_encryption_openssl.sh ~/.ssh/pass test1 encrypt```
