@@ -1,11 +1,11 @@
 # Im-Lab Encrypting/Decrypting Data Procedures
 
 ## Tool and password files 
-* Tool file: Imlab_encryption_tool.sh
-* Password file: **pass**
+* Tool file: _Imlab_encryption_tool.sh_
+* Password file: _pass_
 
 ## Change password file permission as a root with chmod 
-* ```chmod 400 **pass**```
+* ```chmod 400 pass```
 * save it in a safe place (e.g. ~/.ssh/)
 
 ## Encrypt/Decrypt a single file
