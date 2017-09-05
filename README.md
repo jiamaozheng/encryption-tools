@@ -1,4 +1,4 @@
-# Im-Lab Encrypting/Decrypting Data Procedures
+# Im-Lab Encrypting/Decrypting Data Procedures(BETA)
 
 ## Tool and password files 
 * Tool file: _Imlab_encryption_tool.sh_
