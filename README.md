@@ -9,9 +9,9 @@
 * save it in a safe place (e.g. ```~/.ssh/```)
 
 ## Encrypt/Decrypt a single file
-* Encryption usage: ```sh imlab_encryption_openssl.sh ~/.ssh/pass test1/README.md encrypt```
-* Decryption usage: ```sh imlab_encryption_openssl.sh ~/.ssh/pass test1/README.md.enc decrypt```
+* Encryption usage: ```sh imlab_encryption_openssl.sh test1/README.md ~/.ssh/pass encrypt```
+* Decryption usage: ```sh imlab_encryption_openssl.sh test1/README.md.enc ~/.ssh/pass decrypt```
 
 ## Encrypt/Decrypt a folder 
-* Encryption usage: ```sh imlab_encryption_openssl.sh ~/.ssh/pass test1 encrypt```
-* Decryption usage: ```sh imlab_encryption_openssl.sh ~/.ssh/pass test1 decrypt```
+* Encryption usage: ```sh imlab_encryption_openssl.sh test1 ~/.ssh/pass encrypt```
+* Decryption usage: ```sh imlab_encryption_openssl.sh test1 ~/.ssh/pass decrypt```
