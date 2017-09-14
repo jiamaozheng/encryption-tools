@@ -1,4 +1,5 @@
 # Im-Lab Encrypting/Decrypting Data Procedures
+[![Coverage Status](https://coveralls.io/repos/github/jiamaozheng/Imlab-encryption-tools/badge.svg?branch=master)](https://coveralls.io/github/jiamaozheng/Imlab-encryption-tools?branch=master)
 
 ## Tool and password files 
 * Tool file: _Imlab_encryption_tool.sh_
