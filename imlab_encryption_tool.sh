@@ -19,10 +19,10 @@ echo  >> $LOG_FILE
 counter=0 
 start=$SECONDS
 find $1 -not -path '*/\.*' -type f \( ! -iname '.*' \) -print0 | while read -d $'\0' file; do
-	if [[ ${file: -4} != ".enc" ]]; then 
+	if [[ ${file: -4} != ".enc" ]] && [ -f $2 ]; then 
 		echo "encrypting $file ..."
 		echo "encrypting $file ..." >> $LOG_FILE
-    	openssl aes-256-cbc -in "$file" -out "$file.enc" -pass file:$2
+	    openssl aes-256-cbc -in "$file" -out "$file.enc" -pass file:$2
     	echo "deleting $file ..."
     	echo "deleting $file ..." >> $LOG_FILE
     	rm "$file"
@@ -32,6 +32,11 @@ find $1 -not -path '*/\.*' -type f \( ! -iname '.*' \) -print0 | while read -d $
     	echo "$counter files have been encrypted in $((end-start)) seconds" >> $LOG_FILE
     	echo  
     	echo  >> $LOG_FILE
+	else 
+		if [ ! -f $2 ]; then 
+		    echo "password file doesn't exit ..."
+	    	echo "password file doesn't exit ..." >> $LOG_FILE
+    	fi 
     fi 
 done
 echo "---------------------------------- finish encrypting files in $1 ----------------------------------"
@@ -47,19 +52,33 @@ echo  >> $LOG_FILE
 counter=0  
 start=$SECONDS
 find $1 -not -path '*/\.*' -type f \( ! -iname '.*' \) -print0 | while read -d $'\0' file; do
-	if [ ${file: -4} = ".enc" ]; then
+	if [ ${file: -4} = ".enc" ] && [ -f $2 ]; then
 		echo "decrypting $file ..." 
 		echo "decrypting $file ..." >> $LOG_FILE
-	    openssl aes-256-cbc -d -in "$file" -out "${file/%????}" -pass file:$2
-	    echo "deleting $file ..."
-	    echo "deleting $file ..." >> $LOG_FILE
-	    rm "$file"
-	    let counter++
-	    end=$SECONDS
-	    echo "$counter files have been decrypted in $((end-start)) seconds"
-	    echo "$counter files have been decrypted in $((end-start)) seconds" >> $LOG_FILE
-	    echo
-	    echo >> $LOG_FILE
+
+		if $( openssl aes-256-cbc -d -in "$file" -out "${file/%????}" -pass file:$2 ); then 
+		    openssl aes-256-cbc -d -in "$file" -out "${file/%????}" -pass file:$2
+		    echo "deleting $file ..."
+		    echo "deleting $file ..." >> $LOG_FILE
+		    rm "$file"
+		    let counter++
+		    end=$SECONDS
+		    echo "$counter files have been decrypted in $((end-start)) seconds"
+		    echo "$counter files have been decrypted in $((end-start)) seconds" >> $LOG_FILE
+		    echo
+		    echo >> $LOG_FILE
+		else
+			rm "${file/%????}"
+			echo 
+		    echo "damn, bad password! Your files can't be decrypted ..."
+		    echo 
+	    	echo "damn, bad password! Your files can't be decrypted ..." >> $LOG_FILE
+	    fi 	
+	else 
+		if [ ! -f $2 ]; then 
+		    echo "password file doesn't exit ..."
+	    	echo "password file doesn't exit ..." >> $LOG_FILE
+    	fi 
 	fi 
 done
 echo "---------------------------------- finish decrypting files in $1 ----------------------------------"
