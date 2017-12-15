@@ -13,7 +13,7 @@ echo
 echo  >> $LOG_FILE
 if [ $3 = "encrypt" ]; then 
 
-log_file="---------------------------------- start encrypting files in $1 ----------------------------------"
+log_file="---------------------------------- start encrypting on $1 ----------------------------------"
 echo $log_file
 echo $log_file >> $LOG_FILE
 echo 
@@ -28,7 +28,6 @@ find $1 -not -path '*/\.*' -type f \( ! -iname '.*' \) -print0 | while read -d $
 		echo $log_file >> $LOG_FILE
 
 		if $( openssl aes-256-cbc -in "$file" -out "$file.enc" -pass file:$2 ); then 
-		    openssl aes-256-cbc -in "$file" -out "$file.enc" -pass file:$2
 
 		    log_file="deleting $file ..."
 	    	echo $log_file
@@ -43,11 +42,8 @@ find $1 -not -path '*/\.*' -type f \( ! -iname '.*' \) -print0 | while read -d $
 	    	echo  
 	    	echo  >> $LOG_FILE
    		else 
-   			rm "$file.enc"
-
-			log_file="something is wrong!"
-			echo 
-		    echo $log_file
+			log_file=$( openssl aes-256-cbc -in "$file" -out "$file.enc" -pass file:$2 2>&1)
+			rm "$file.enc"
 		    echo 
 	    	echo $log_file >> $LOG_FILE
 	    	break 
@@ -62,7 +58,7 @@ find $1 -not -path '*/\.*' -type f \( ! -iname '.*' \) -print0 | while read -d $
     fi 
 done
 
-log_file="---------------------------------- finish encrypting files in $1 ----------------------------------"
+log_file="---------------------------------- finish encrypting on $1 ----------------------------------"
 echo $log_file
 echo $log_file >> $LOG_FILE
 fi 
@@ -70,7 +66,7 @@ fi
 #------------------------Decryption--------------------------------
 if [ $3 = "decrypt" ]; then
 
-log_file="---------------------------------- start decrypting files in $1 ----------------------------------"
+log_file="---------------------------------- start decrypting on $1 ----------------------------------"
 echo $log_file
 echo $log_file >> $LOG_FILE
 echo 
@@ -84,8 +80,7 @@ find $1 -not -path '*/\.*' -type f \( ! -iname '.*' \) -print0 | while read -d $
 		echo $log_file
 		echo $log_file >> $LOG_FILE
 
-		if $( openssl aes-256-cbc -d -in "$file" -out "${file/%????}" -pass file:$2 ); then 
-		    openssl aes-256-cbc -d -in "$file" -out "${file/%????}" -pass file:$2
+		if $( openssl aes-256-cbc -d -in "$file" -out "${file/%????}" -pass file:$2); then 
 
 		    log_file="deleting $file ..."
 		    echo $log_file
@@ -100,11 +95,9 @@ find $1 -not -path '*/\.*' -type f \( ! -iname '.*' \) -print0 | while read -d $
 		    echo
 		    echo >> $LOG_FILE
 		else
-			rm "${file/%????}"
 
-			log_file="your files can't be decrypted!"
-			echo 
-		    echo $log_file
+			log_file=$( openssl aes-256-cbc -d -in "$file" -out "${file/%????}" -pass file:$2 2>&1)
+			rm "${file/%????}"
 		    echo 
 	    	echo $log_file >> $LOG_FILE
 	    	break 
@@ -119,9 +112,12 @@ find $1 -not -path '*/\.*' -type f \( ! -iname '.*' \) -print0 | while read -d $
 	fi 
 done
 
-log_file="---------------------------------- finish decrypting files in $1 ----------------------------------"
+log_file="---------------------------------- finish decrypting on $1 ----------------------------------"
 echo $log_file
 echo $log_file >> $LOG_FILE
 fi
 echo 
 echo  >> $LOG_FILE
+
+
+
