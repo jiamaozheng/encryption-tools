@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Author: Jiamao Zheng, jiamaoz@yahoo.com, 2017
+
 #--------------------------Password file-----------------------------
 # place password in the text file `pass'
 # chmod 400 pass
